@@ -1,85 +1,113 @@
 # codex-temporary-mode
 
-Keep one-off Codex conversations out of your saved chat history.
+Use Codex without saving one-off conversations to your chat history.
 
-Use temporary chats in your terminal, or turn on **Temporary** in VS Code. A purple chat input helps you recognise when it is on.
+Works with:
 
-Unofficial project. Not affiliated with or endorsed by OpenAI.
+* **VS Code Codex** — adds a **Temporary** mode to new chats.
+* **Codex CLI** — starts temporary terminal chats.
 
-## What you need
-
-- Node.js 22 or newer.
-- Codex installed and signed in.
-- For VS Code: Codex extension **26.908.40401**. Other versions are not supported yet.
+> **Unofficial project. Not affiliated with or endorsed by OpenAI.**
 
 ## Install
 
-Once the npm release is available:
+Requirements:
+
+* Node.js 22+
+* Codex installed and signed in
+* VS Code Codex extension `26.908.40401` and above for VS Code support
+
+Install globally:
 
 ```sh
 npm i -g codex-temporary-mode
 ```
 
-On Windows, use `npm.cmd` if PowerShell blocks `npm`.
-The installer asks whether to add Temporary Mode to the supported VS Code Codex extension. When you accept, reload VS Code once. No second reload is required.
+During installation, you can choose to enable Temporary Mode in VS Code.
 
-## Temporary chats in VS Code
+After installation, **reload VS Code once**.
 
-If you skipped the installer prompt, run:
+> On Windows, use `npm.cmd` if PowerShell blocks `npm`.
+
+## VS Code
+
+If you enabled VS Code support during installation, start a new Codex chat and turn on **Temporary**.
+
+Temporary chats have:
+
+* A purple chat input
+* A **Temporary chat** label
+* No saved conversation after VS Code is restarted
+
+Existing chats are not affected.
+
+If you skipped VS Code setup during installation, run:
 
 ```sh
 codex-temporary-mode vscode install
 ```
 
-Then reload VS Code once and start a new Codex chat with **Temporary** on.
+Then reload VS Code once.
 
-Look for the purple input and **Temporary chat** label. Existing conversations keep their original mode.
+If you change Temporary Mode from the status bar or Command Palette, reload VS Code before starting the next chat.
 
-To check it works, send a message in a new temporary chat and restart VS Code. The chat should no longer appear in history.
+## Terminal
 
-If you change the mode from the status bar or Command Palette, reload VS Code before starting your next chat.
-
-## Temporary chats in your terminal
+Start a temporary Codex chat:
 
 ```sh
 codex-temporary-mode
 ```
 
-Type your message to begin. Use `/new` for a fresh chat and `/exit` to leave.
+Useful commands:
 
-Chats are read-only by default. To let Codex edit files in your project:
+```text
+/new    Start a new temporary chat
+/exit   Exit
+```
+
+By default, Codex cannot modify your files.
+
+To allow file changes:
 
 ```sh
 codex-temporary-mode --workspace-write
 ```
 
-For more options, run `codex-temporary-mode --help`.
+See all options:
 
-## Good to know
-
-- Temporary chats cannot be reopened later. Any file changes still remain.
-- Queued follow-up messages in a temporary chat are held only until the current VS Code window closes or reloads.
-- Temporary mode does not guarantee zero retention by OpenAI or clear text already shown in your terminal.
-- Terminal mode supports text chat, without attachments or interactive approval prompts.
-- VS Code support is for local chats only. Cloud chats, remote connections and ChatGPT desktop/web are not supported.
-- If the Codex extension updates, you may need a new codex-temporary-mode release.
+```sh
+codex-temporary-mode --help
+```
 
 ## Uninstall
 
-Run this from your project folder:
+Run:
 
 ```sh
 codex-temporary-mode uninstall
 ```
 
-This restores detected VS Code installations, removes the saved Temporary setting, and uninstalls the terminal package from your active npm installation. Reload VS Code once and close any running temporary chats afterward.
+This:
 
-Using a source checkout? Run `bash uninstall.sh` or `.\uninstall.ps1` instead. Run it again safely if already uninstalled.
+* Restores supported VS Code Codex installations
+* Removes the Temporary Mode setting
+* Uninstalls `codex-temporary-mode`
 
-For a custom extension location, add `--vscode-path <folder>`. For settings in another project or a custom VS Code profile, add `--settings-path <settings.json or .code-workspace>`. Repeat these options for multiple locations. Other machines, WSL environments and npm installations must be cleaned up separately.
+Then reload VS Code once.
 
-Your normal Codex installation, saved conversations, project files and unrelated settings are kept. If restoration is blocked by changed extension files or backups, uninstall reports the problem and keeps the package available for recovery.
+Your normal Codex installation, saved chats, project files, and unrelated VS Code settings are not removed.
+
+## Limitations
+
+* Temporary chats cannot be reopened later.
+* Files changed during a temporary chat are **not** reverted.
+* Temporary Mode does not guarantee zero retention by OpenAI.
+* Terminal mode currently supports text chat only.
+* VS Code support currently works with local chats only.
+* Cloud chats, remote connections, ChatGPT web, and ChatGPT desktop are not supported.
+* VS Code integration currently supports Codex extension `26.908.40401`. A Codex extension update may require a new `codex-temporary-mode` release.
 
 ## License
 
-[MIT](LICENSE).
+[MIT](LICENSE)
