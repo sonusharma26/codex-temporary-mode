@@ -113,13 +113,47 @@ tool_timeout_sec = 1800
 env_vars = ["CODEX_ACCELERATOR_EPHEMERAL"]
 ```
 
-The ChatGPT desktop app, Codex CLI, and Codex IDE extension share local MCP configuration. Restart the relevant client after adding the server, then use `/mcp` where available to verify the four tools. No client configuration is changed automatically.
+The ChatGPT desktop app, Codex CLI, and Codex IDE extension share local MCP configuration. Restart the relevant client after adding the server, then use `/mcp` where available to verify the accelerator tools. No client configuration is changed automatically.
 
 By default, SQLite state is stored in the OS-local application data directory, never inside the repository. Complete raw command output is retained outside the repository and removed when the MCP session ends. Pass `--ephemeral` to keep SQLite in memory as well. The `codex-temporary-mode` terminal client marks configured accelerator children ephemeral; the `env_vars` entry above allows Codex to forward that marker.
 
 Commands are launched directly with an argument array and no shell. Delta Mode v0.1 rejects batch and PowerShell scripts; on Windows it resolves `npm` and `npx` through their JavaScript entry points.
 
 `--max-output-bytes` is an explicit safety override: when set and exceeded, the command is stopped and the raw result is marked truncated. Without that option, raw output is retained in full for the session.
+
+## Pipeline Mode (v0.2)
+
+Pipeline Mode runs deliberately requested validation checkpoints against isolated workspace snapshots. Codex can continue editing while the single local worker validates the captured workspace. Results always identify the exact workspace tested; a stale pass never validates newer code.
+
+It adds five MCP tools:
+
+* `create_checkpoint` — capture and queue the current workspace
+* `get_pipeline_status` — inspect the active worker and collapsed queue
+* `get_latest_validation` — retrieve a compact result with current/stale freshness
+* `cancel_checkpoint` — cancel queued or active work
+* `run_final_validation` — block until the configured final profile validates the current workspace
+
+Validation commands come only from the trusted repository configuration `.codex/accelerator.json`; MCP calls cannot supply arbitrary commands:
+
+```json
+{
+  "pipeline": {
+    "maxWorkers": 1,
+    "profiles": {
+      "targeted": [
+        { "id": "tests", "executable": "npm", "args": ["test"], "parser": "vitest" }
+      ],
+      "final": [
+        { "id": "tests", "executable": "npm", "args": ["test"], "parser": "vitest" }
+      ]
+    }
+  }
+}
+```
+
+Checkpointing is manual in v0.2. Queued checkpoints for the same profile collapse to the newest workspace, while a running validation is allowed to finish and is reported as historical if the live workspace changed. Raw command output remains available through `get_raw_output`.
+
+Commands in a profile run in order and stop after a failure. Set `"continueOnFailure": true` on a command when later checks are independent and should still run.
 
 ## Uninstall
 

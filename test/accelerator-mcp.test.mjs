@@ -65,7 +65,7 @@ test('CLI parses temporary-mode environment without changing normal defaults', (
   assert.throws(() => parseAcceleratorArgs(['pipeline']), /Only the mcp command/);
 });
 
-test('stdio MCP exposes exactly the Delta MVP and rehydrates after reset', async t => {
+test('stdio MCP exposes Delta and Pipeline tools and rehydrates after reset', async t => {
   const workspace = repo(t), mcp = client(t, workspace);
   const initialized = await mcp.request('initialize', {
     protocolVersion: LATEST_PROTOCOL_VERSION,
@@ -75,7 +75,10 @@ test('stdio MCP exposes exactly the Delta MVP and rehydrates after reset', async
   assert.equal(initialized.serverInfo.name, 'codex-accelerator');
   mcp.notify('notifications/initialized');
   const listed = await mcp.request('tools/list');
-  assert.deepEqual(listed.tools.map(tool => tool.name).sort(), ['get_raw_output', 'read_file_delta', 'reset_context_generation', 'run_command_delta']);
+  assert.deepEqual(listed.tools.map(tool => tool.name).sort(), [
+    'cancel_checkpoint', 'create_checkpoint', 'get_latest_validation', 'get_pipeline_status',
+    'get_raw_output', 'read_file_delta', 'reset_context_generation', 'run_command_delta', 'run_final_validation',
+  ]);
 
   const first = await mcp.request('tools/call', { name: 'read_file_delta', arguments: { path: 'source.txt' } });
   assert.match(first.content[0].text, /MODE full/); assert.match(first.content[0].text, /hello/);

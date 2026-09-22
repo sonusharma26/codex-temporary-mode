@@ -3,7 +3,7 @@
   "version": "3.2.5",
   "private": false,
   "type": "module",
-  "description": "Temporary chats and a local Delta Mode accelerator for Codex",
+  "description": "Temporary chats and local Delta and Pipeline Mode acceleration for Codex",
   "scripts": {
     "postinstall": "node build/postinstall.mjs",
     "test": "node --test",
@@ -33,6 +33,7 @@
     "codex",
     "mcp",
     "delta-mode",
+    "pipeline-mode",
     "temporary-chat",
     "cli",
     "vscode"
