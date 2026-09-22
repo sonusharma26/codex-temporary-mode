@@ -83,7 +83,7 @@ export async function postinstall({
   } else {
     terminal = consoleFactory();
     if (!terminal) {
-      output.write('[codex-temporary-mode] VS Code patch skipped because npm has no interactive terminal. Run "codex-temporary-mode vscode install" when ready.\n');
+      output.write('[codex-temporary-mode] Interactive setup was skipped because npm has no interactive terminal. Run "codex-temporary-mode setup" inside your repository to enable Temporary, Delta, and Pipeline Mode.\n');
       return false;
     }
     shouldPatch = terminal.ask();
@@ -91,7 +91,7 @@ export async function postinstall({
 
   try {
     if (!shouldPatch) {
-      terminal.write('[codex-temporary-mode] VS Code patch skipped. Run "codex-temporary-mode vscode install" when ready.\n');
+      terminal.write('[codex-temporary-mode] VS Code patch skipped. Run "codex-temporary-mode setup" inside your repository when ready.\n');
       return false;
     }
 
@@ -102,7 +102,7 @@ export async function postinstall({
       terminal.write('[codex-temporary-mode] VS Code was not patched. The terminal client remains installed.\n');
       return false;
     }
-    terminal.write('[codex-temporary-mode] Reload VS Code once to activate Temporary Mode.\n');
+    terminal.write('[codex-temporary-mode] Run "codex-temporary-mode setup" inside each repository to enable Delta and Pipeline Mode, then reload VS Code once.\n');
     return true;
   } finally {
     terminal.close?.();

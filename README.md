@@ -23,11 +23,17 @@ Install globally:
 
 ```sh
 npm i -g codex-temporary-mode
+cd /path/to/your/repository
+codex-temporary-mode setup
 ```
 
-During installation, you can choose to enable Temporary Mode in VS Code.
+`setup` performs the three local steps:
 
-After installation, **reload VS Code once**.
+* Enables Temporary Mode in the installed VS Code Codex extension.
+* Adds the Delta and Pipeline MCP server to the trusted project's `.codex/config.toml`.
+* Generates `.codex/accelerator.json` when standard Node.js, Cargo, or .NET validation commands can be detected.
+
+Run `setup` once in each repository where you want Delta and Pipeline Mode, then restart Codex or reload VS Code once. The generated MCP configuration uses the exact repository path, so validation cannot silently move to another workspace.
 
 > On Windows, use `npm.cmd` if PowerShell blocks `npm`.
 
@@ -93,15 +99,13 @@ Delta Mode is a separate local MCP process. It does not patch Codex and it does 
 
 File responses report exact full-source, delivered-text, and saved-text byte counts. These measure transmitted source or diff text, not estimated model tokens.
 
-Install the package, then add the STDIO server to Codex:
+The recommended setup command adds the STDIO server automatically:
 
 ```sh
-codex mcp add codex-accelerator -- codex-accelerator mcp --workspace /absolute/path/to/repository
+codex-temporary-mode setup
 ```
 
-For Temporary Mode forwarding, add the `env_vars` setting shown in the configuration form below.
-
-Or use a trusted project’s `.codex/config.toml`:
+Use `codex-temporary-mode setup --skip-vscode` when you only want Delta and Pipeline Mode. For manual setup, use a trusted project's `.codex/config.toml`:
 
 ```toml
 [mcp_servers.codex_accelerator]
@@ -113,7 +117,7 @@ tool_timeout_sec = 1800
 env_vars = ["CODEX_ACCELERATOR_EPHEMERAL"]
 ```
 
-The ChatGPT desktop app, Codex CLI, and Codex IDE extension share local MCP configuration. Restart the relevant client after adding the server, then use `/mcp` where available to verify the accelerator tools. No client configuration is changed automatically.
+The ChatGPT desktop app, Codex CLI, and Codex IDE extension share local MCP configuration. Restart the relevant client after adding the server, then use `/mcp` where available to verify the accelerator tools.
 
 By default, SQLite state is stored in the OS-local application data directory, never inside the repository. Complete raw command output is retained outside the repository and removed when the MCP session ends. Pass `--ephemeral` to keep SQLite in memory as well. The `codex-temporary-mode` terminal client marks configured accelerator children ephemeral; the `env_vars` entry above allows Codex to forward that marker.
 

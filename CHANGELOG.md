@@ -1,5 +1,12 @@
 # codex-temporary-mode changelog
 
+## 3.3.0
+
+- Added Delta Mode with version-aware file reads, compact command diagnostics, raw-output retrieval and context rehydration.
+- Added Pipeline Mode with isolated validation snapshots, asynchronous checkpoints, queue collapsing and exact-workspace final gates.
+- Added `codex-temporary-mode setup` to configure Temporary, Delta and Pipeline Mode for a trusted Git repository.
+- Added automatic starter Pipeline profiles for Node.js, Cargo and .NET projects.
+
 ## 3.2.3
 
 - Added one-command uninstall for VS Code patches, Temporary settings and the terminal package.

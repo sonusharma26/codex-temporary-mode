@@ -7,7 +7,7 @@ const output = new URL('build/', root);
 // This fixed directory contains generated files only.
 await fs.rm(output, { recursive: true, force: true });
 const files = ['codex-temporary-mode.mjs', 'temp-codex.mjs', 'codex-accelerator.mjs', 'patch.mjs', 'postinstall.mjs', 'uninstall.mjs',
-  'lib/app-server.mjs', 'lib/terminal.mjs', 'lib/installers.mjs', 'lib/vscode-adapter.mjs',
+  'lib/app-server.mjs', 'lib/terminal.mjs', 'lib/setup.mjs', 'lib/installers.mjs', 'lib/vscode-adapter.mjs',
   'lib/accelerator/cli.mjs', 'lib/accelerator/command-delta.mjs', 'lib/accelerator/diagnostics.mjs',
   'lib/accelerator/diff.mjs', 'lib/accelerator/file-delta.mjs', 'lib/accelerator/hashing.mjs',
   'lib/accelerator/mcp-server.mjs', 'lib/accelerator/paths.mjs', 'lib/accelerator/raw-output.mjs',
