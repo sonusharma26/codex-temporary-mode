@@ -6,8 +6,20 @@ const root = new URL('../', import.meta.url);
 const output = new URL('build/', root);
 // This fixed directory contains generated files only.
 await fs.rm(output, { recursive: true, force: true });
-const files = ['codex-temporary-mode.mjs', 'temp-codex.mjs', 'patch.mjs', 'postinstall.mjs', 'uninstall.mjs',
-  'lib/app-server.mjs', 'lib/terminal.mjs', 'lib/installers.mjs', 'lib/vscode-adapter.mjs',
+const files = ['codex-temporary-mode.mjs', 'temp-codex.mjs', 'codex-accelerator.mjs', 'patch.mjs', 'postinstall.mjs', 'uninstall.mjs',
+  'lib/app-server.mjs', 'lib/terminal.mjs', 'lib/setup.mjs', 'lib/installers.mjs', 'lib/vscode-adapter.mjs',
+  'lib/accelerator/cli.mjs', 'lib/accelerator/command-delta.mjs', 'lib/accelerator/diagnostics.mjs',
+  'lib/accelerator/diff.mjs', 'lib/accelerator/file-delta.mjs', 'lib/accelerator/hashing.mjs',
+  'lib/accelerator/mcp-server.mjs', 'lib/accelerator/paths.mjs', 'lib/accelerator/raw-output.mjs',
+  'lib/accelerator/session-manager.mjs', 'lib/accelerator/store.mjs', 'lib/accelerator/workspace.mjs',
+  'lib/accelerator/pipeline/changed-files.mjs', 'lib/accelerator/pipeline/config.mjs',
+  'lib/accelerator/pipeline/mcp-tools.mjs', 'lib/accelerator/pipeline/runner.mjs',
+  'lib/accelerator/pipeline/service.mjs', 'lib/accelerator/pipeline/snapshot.mjs',
+  'lib/accelerator/parsers/cargo.mjs', 'lib/accelerator/parsers/common.mjs',
+  'lib/accelerator/parsers/dotnet.mjs', 'lib/accelerator/parsers/eslint.mjs',
+  'lib/accelerator/parsers/generic.mjs', 'lib/accelerator/parsers/git.mjs',
+  'lib/accelerator/parsers/index.mjs', 'lib/accelerator/parsers/pytest.mjs',
+  'lib/accelerator/parsers/runners.mjs', 'lib/accelerator/parsers/typescript.mjs',
   'src/inject/composer-ui.js', 'src/inject/vscode-inject.cjs'];
 for (const file of files) {
   const source = await fs.readFile(new URL(file, root), 'utf8');
@@ -21,7 +33,7 @@ for (const file of files) {
   await fs.mkdir(new URL('./', destination), { recursive: true });
   await fs.writeFile(destination, code);
 }
-for (const file of ['codex-temporary-mode.mjs', 'temp-codex.mjs', 'patch.mjs', 'postinstall.mjs']) {
+for (const file of ['codex-temporary-mode.mjs', 'temp-codex.mjs', 'codex-accelerator.mjs', 'patch.mjs', 'postinstall.mjs']) {
   await fs.chmod(new URL(file, output), 0o755);
 }
 console.log('Built minified release files (no source maps).');

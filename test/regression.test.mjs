@@ -177,7 +177,7 @@ test('VS Code install is idempotent and restore is byte-exact', t => {
   const root = extension(t);
   const before = fs.readFileSync(path.join(root, 'package.json'));
   installVSCode(root, helper);
-  assert(fs.existsSync(path.join(root, '.temp-codex-reload-once')));
+  assert(!fs.existsSync(path.join(root, '.temp-codex-reload-once')));
   assert.match(installVSCode(root, helper), /Already patched/);
   assert.equal(JSON.parse(fs.readFileSync(path.join(root, 'package.json'))).contributes.configuration.length, 1);
   restoreVSCode(root);
@@ -189,7 +189,7 @@ test('VS Code install is idempotent and restore is byte-exact', t => {
   installVSCode(root, helper); // restore cleaned stale backups
 });
 
-test('a verified v3 patch upgrades to the current one-shot reload patch', t => {
+test('a verified v3 patch upgrades to the current patch version', t => {
   const root = extension(t);
   installVSCode(root, helper);
   const manifestPath = path.join(root, '.temp-codex-v3.json');
@@ -197,8 +197,8 @@ test('a verified v3 patch upgrades to the current one-shot reload patch', t => {
   manifest.version = 3;
   fs.writeFileSync(manifestPath, JSON.stringify(manifest));
   assert.match(installVSCode(root, helper), /Reload VS Code once/);
-  assert.equal(JSON.parse(fs.readFileSync(manifestPath, 'utf8')).version, 5);
-  assert(fs.existsSync(path.join(root, '.temp-codex-reload-once')));
+  assert.equal(JSON.parse(fs.readFileSync(manifestPath, 'utf8')).version, 6);
+  assert(!fs.existsSync(path.join(root, '.temp-codex-reload-once')));
 });
 
 test('unsupported versions and changed source layouts are rejected before writing', t => {
