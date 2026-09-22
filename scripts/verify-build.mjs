@@ -10,6 +10,10 @@ const stage = fs.mkdtempSync(path.join(parent, 'codex-temporary-mode-build-'));
 try {
   fs.cpSync(path.join(root, 'build'), stage, { recursive: true });
   for (const dir of ['test', 'fixtures']) fs.cpSync(path.join(root, dir), path.join(stage, dir), { recursive: true });
+  fs.mkdirSync(path.join(stage, 'node_modules', '@modelcontextprotocol'), { recursive: true });
+  fs.cpSync(path.join(root, 'node_modules', '@modelcontextprotocol', 'core'), path.join(stage, 'node_modules', '@modelcontextprotocol', 'core'), { recursive: true });
+  fs.cpSync(path.join(root, 'node_modules', '@modelcontextprotocol', 'server'), path.join(stage, 'node_modules', '@modelcontextprotocol', 'server'), { recursive: true });
+  fs.cpSync(path.join(root, 'node_modules', 'zod'), path.join(stage, 'node_modules', 'zod'), { recursive: true });
   fs.copyFileSync(path.join(root, 'package.json'), path.join(stage, 'package.json'));
   const env = { ...process.env };
   // Installed-source checks compare byte-for-byte with the original installed helper.

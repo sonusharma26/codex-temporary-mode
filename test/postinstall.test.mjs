@@ -13,6 +13,7 @@ test('postinstall safely skips the VS Code patch without an interactive terminal
     input: { isTTY: false },
     output: { write: text => { output += text; } },
     run: () => { throw new Error('must not run'); },
+    consoleFactory: () => null,
   });
   assert.equal(result, false);
   assert.match(output, /no interactive terminal/);

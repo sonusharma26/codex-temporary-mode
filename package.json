@@ -3,7 +3,7 @@
   "version": "3.2.5",
   "private": false,
   "type": "module",
-  "description": "Temporary chats for Codex in VS Code and the terminal",
+  "description": "Temporary chats and a local Delta Mode accelerator for Codex",
   "scripts": {
     "postinstall": "node build/postinstall.mjs",
     "test": "node --test",
@@ -18,10 +18,11 @@
   "license": "MIT",
   "bin": {
     "codex-temporary-mode": "build/codex-temporary-mode.mjs",
-    "temp-codex": "build/temp-codex.mjs"
+    "temp-codex": "build/temp-codex.mjs",
+    "codex-accelerator": "build/codex-accelerator.mjs"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.13.0"
   },
   "files": [
     "build/",
@@ -30,6 +31,8 @@
   ],
   "keywords": [
     "codex",
+    "mcp",
+    "delta-mode",
     "temporary-chat",
     "cli",
     "vscode"
@@ -48,5 +51,9 @@
   "homepage": "https://github.com/sonu-mamsys/codex-temporary-mode#readme",
   "bugs": {
     "url": "https://github.com/sonu-mamsys/codex-temporary-mode/issues"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.0.0",
+    "zod": "^4.6.5"
   }
 }
