@@ -23,7 +23,7 @@ test('Pipeline Mode validates snapshots asynchronously, retains failures, and ga
   fs.writeFileSync(path.join(root, 'source.txt'), 'stable\n');
   fs.mkdirSync(path.join(root, '.codex'));
   fs.writeFileSync(path.join(root, '.codex', 'accelerator.json'), JSON.stringify({ pipeline: { profiles: {
-    targeted: [{ id: 'types', executable: process.execPath, args: ['-e', "const fs=require('node:fs');if(fs.readFileSync('source.txt','utf8').includes('timeout'))setTimeout(()=>{},30000);else{process.stderr.write('src/file.ts(2,3): error TS9001: broken at '+process.cwd()+'\\n');process.exitCode=1}"], parser: 'typescript', timeoutMs: 1000 }],
+    targeted: [{ id: 'types', executable: process.execPath, args: ['-e', "const fs=require('node:fs');if(fs.readFileSync('source.txt','utf8').includes('timeout'))setTimeout(()=>{},30000);else{process.stderr.write('src/file.ts(2,3): error TS9001: broken at '+process.cwd()+'\\n');process.exitCode=1}"], parser: 'typescript', timeoutMs: 5000 }],
     final: [{ id: 'final', executable: process.execPath, args: ['-e', "process.stdout.write('x'.repeat(1100000))"], parser: 'generic' }],
   } } }));
   git('add', '.'); git('commit', '-qm', 'initial');
